@@ -339,7 +339,7 @@ class MultiTriggerAutocompleteState extends State<MultiTriggerAutocomplete> {
     }
     if (old == null) {
       _textEditingController.removeListener(_onChangedField);
-      _textEditingController.dispose();
+    ///  _textEditingController.dispose();
       _textEditingController = current!;
     } else if (current == null) {
       _textEditingController.removeListener(_onChangedField);
@@ -359,7 +359,7 @@ class MultiTriggerAutocompleteState extends State<MultiTriggerAutocomplete> {
     }
     if (old == null) {
       _focusNode.removeListener(_onChangedFocus);
-      _focusNode.dispose();
+     /// _focusNode.dispose();
       _focusNode = current!;
     } else if (current == null) {
       _focusNode.removeListener(_onChangedFocus);
@@ -395,11 +395,11 @@ class MultiTriggerAutocompleteState extends State<MultiTriggerAutocomplete> {
   void dispose() {
     _textEditingController.removeListener(_onChangedField);
     if (widget.textEditingController == null) {
-      _textEditingController.dispose();
+    ///  _textEditingController.dispose();
     }
     _focusNode.removeListener(_onChangedFocus);
     if (widget.focusNode == null) {
-      _focusNode.dispose();
+    ///  _focusNode.dispose();
     }
     _debounceTimer?.cancel();
     _currentTrigger = null;
