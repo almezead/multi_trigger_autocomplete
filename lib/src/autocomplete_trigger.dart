@@ -87,8 +87,7 @@ class AutocompleteTrigger {
     final textBeforeTrigger = text.substring(0, firstTriggerIndexBeforeCursor);
     if (triggerOnlyAfterSpace &&
         textBeforeTrigger.isNotEmpty &&
-        !(textBeforeTrigger.endsWith(' ') ||
-            textBeforeTrigger.endsWith('\n'))) {
+        !( textBeforeTrigger.endsWith('\n')  )) { //textBeforeTrigger.endsWith(' ') ||
       return null;
     }
 
