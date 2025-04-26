@@ -87,7 +87,7 @@ class AutocompleteTrigger {
     final textBeforeTrigger = text.substring(0, firstTriggerIndexBeforeCursor);
     if (triggerOnlyAfterSpace &&
         textBeforeTrigger.isNotEmpty &&
-        !( textBeforeTrigger.endsWith('\n')  )) { //textBeforeTrigger.endsWith(' ') ||
+        !(textBeforeTrigger.endsWith(' ') || textBeforeTrigger.endsWith('\n')  )) {
       return null;
     }
 
@@ -100,7 +100,7 @@ class AutocompleteTrigger {
     // valid example: "@luke_skywa..."
     // invalid example: "@luke skywa..."
     final suggestionText = text.substring(suggestionStart, suggestionEnd);
-    if (suggestionText.contains(' ')) return null;
+    if (suggestionText.contains(' ') || textBeforeTrigger.endsWith('\n') ) return null;
 
     // A minimum number of characters can be provided to only show
     // suggestions after the customer has input enough characters.
