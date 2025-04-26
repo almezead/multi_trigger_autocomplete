@@ -100,7 +100,7 @@ class AutocompleteTrigger {
     // valid example: "@luke_skywa..."
     // invalid example: "@luke skywa..."
     final suggestionText = text.substring(suggestionStart, suggestionEnd);
-    if (suggestionText.contains(' ') || textBeforeTrigger.endsWith('\n') ) return null;
+    if (suggestionText.contains(' ') || suggestionText.contains('\n')) return null;
 
     // A minimum number of characters can be provided to only show
     // suggestions after the customer has input enough characters.
