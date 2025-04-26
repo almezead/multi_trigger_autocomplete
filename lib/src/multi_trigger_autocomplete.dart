@@ -230,8 +230,8 @@ class MultiTriggerAutocompleteState extends State<MultiTriggerAutocomplete> {
 
     final end = querySelection.extentOffset;
 
-    final alreadyContainsSpace = text.substring(end).startsWith(' ');
-    // Having extra space helps dismissing the auto-completion view.
+    final alreadyContainsSpace = text.substring(end).startsWith('');
+    // Having extra space helps dismissing the auto-completion view. \n
     if (!alreadyContainsSpace) option += ' ';
 
     var selectionOffset = start + option.length;
