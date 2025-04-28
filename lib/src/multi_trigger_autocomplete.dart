@@ -417,7 +417,7 @@ class MultiTriggerAutocompleteState extends State<MultiTriggerAutocomplete> {
         );
         final shouldShowOptions = _shouldShowOptions;
         final optionViewBuilder = shouldShowOptions
-            ? TextFieldTapRegion(
+            ? Container(
                 child: _currentTrigger!.optionsViewBuilder(
                   context,
                   _currentQuery!,
