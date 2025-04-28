@@ -18,8 +18,12 @@ class AutocompleteTrigger {
     this.triggerOnlyAtStart = false,
     this.triggerOnlyAfterSpace = true,
     this.minimumRequiredCharacters = 0,
+    this.onChanged,
   });
 
+  //final void Function(AutocompleteQuery?)? onChanged;
+
+    final ValueChanged<AutocompleteQuery?>? onChanged;
   /// The trigger character.
   ///
   /// eg. '@', '#', ':'
@@ -65,19 +69,25 @@ class AutocompleteTrigger {
     final selection = textEditingValue.selection;
 
     // If the selection is invalid, then it's not a trigger.
-    if (!selection.isValid) return null;
+    if (!selection.isValid) {
+      onChanged?.call(null);
+      return null;
+    }
     final cursorPosition = selection.baseOffset;
 
     // Find the first [trigger] location before the input cursor.
-    final firstTriggerIndexBeforeCursor =
-        text.substring(0, cursorPosition).lastIndexOf(trigger);
+    final firstTriggerIndexBeforeCursor = text.substring(0, cursorPosition).lastIndexOf(trigger);
 
     // If the [trigger] is not found before the cursor, then it's not a trigger.
-    if (firstTriggerIndexBeforeCursor == -1) return null;
+    if (firstTriggerIndexBeforeCursor == -1) {
+      onChanged?.call(null);
+      return null;
+    }
 
     // If the [trigger] is found before the cursor, but the [trigger] is only
     // recognised at the start of the input, then it's not a trigger.
     if (triggerOnlyAtStart && firstTriggerIndexBeforeCursor != 0) {
+      onChanged?.call(null);
       return null;
     }
 
@@ -85,33 +95,45 @@ class AutocompleteTrigger {
     // valid examples: "@user", "Hello @user", "Hello\n@user"
     // invalid examples: "Hello@user"
     final textBeforeTrigger = text.substring(0, firstTriggerIndexBeforeCursor);
-    if (triggerOnlyAfterSpace &&
-        textBeforeTrigger.isNotEmpty &&
-        !(textBeforeTrigger.endsWith(' ') || textBeforeTrigger.endsWith('\n')  )) {
+    if (triggerOnlyAfterSpace && textBeforeTrigger.isNotEmpty && !(textBeforeTrigger.endsWith(' ') || textBeforeTrigger.endsWith('\n'))) {
+      onChanged?.call(null);
       return null;
     }
 
     // The suggestion range. Protect against invalid ranges.
     final suggestionStart = firstTriggerIndexBeforeCursor + trigger.length;
     final suggestionEnd = cursorPosition;
-    if (suggestionStart > suggestionEnd) return null;
+    if (suggestionStart > suggestionEnd) {
+      onChanged?.call(null);
+      return null;
+    }
 
     // Fetch the suggestion text. The suggestions can't have spaces.
     // valid example: "@luke_skywa..."
     // invalid example: "@luke skywa..."
     final suggestionText = text.substring(suggestionStart, suggestionEnd);
-    if (suggestionText.contains(' ') || suggestionText.contains('\n')) return null;
+    if (suggestionText.contains(' ') || suggestionText.contains('\n')) {
+      onChanged?.call(null);
+      return null;
+    }
 
     // A minimum number of characters can be provided to only show
     // suggestions after the customer has input enough characters.
-    if (suggestionText.length < minimumRequiredCharacters) return null;
+    if (suggestionText.length < minimumRequiredCharacters) {
+      onChanged?.call(null);
+      return null;
+    }
 
-    return AutocompleteQuery(
+    final autocompleteQuery = AutocompleteQuery(
       query: suggestionText,
       selection: TextSelection(
         baseOffset: suggestionStart,
         extentOffset: suggestionEnd,
       ),
     );
+
+    onChanged?.call(autocompleteQuery);
+
+    return autocompleteQuery;
   }
 }
