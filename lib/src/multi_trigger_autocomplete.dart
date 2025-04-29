@@ -425,11 +425,11 @@ class MultiTriggerAutocompleteState extends State<MultiTriggerAutocomplete> {
                 ),
               )
             : null;
-
-        return PortalTarget(
-          anchor: anchor,
-          visible: shouldShowOptions,
-          portalFollower: optionViewBuilder,
+//PortalTarget
+        return Container(
+          //anchor: anchor,
+        //  visible: shouldShowOptions,
+        //  portalFollower: optionViewBuilder,
           child: widget.fieldViewBuilder(
             context,
             _textEditingController,
