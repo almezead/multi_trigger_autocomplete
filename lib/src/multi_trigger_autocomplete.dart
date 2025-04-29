@@ -416,7 +416,7 @@ class MultiTriggerAutocompleteState extends State<MultiTriggerAutocomplete> {
           widthFactor: widget.optionsWidthFactor,
         );
         final shouldShowOptions = _shouldShowOptions;
-        final optionViewBuilder = shouldShowOptions
+        /*final optionViewBuilder = shouldShowOptions
             ? TextFieldTapRegion(
                 child: _currentTrigger!.optionsViewBuilder(
                   context,
@@ -424,17 +424,31 @@ class MultiTriggerAutocompleteState extends State<MultiTriggerAutocomplete> {
                   _textEditingController,
                 ),
               )
-            : null;
+            : null;*/
 //PortalTarget
-        return Container(
-          //anchor: anchor,
-        //  visible: shouldShowOptions,
-        //  portalFollower: optionViewBuilder,
-          child: widget.fieldViewBuilder(
-            context,
-            _textEditingController,
-            _focusNode,
-          ),
+        return Column(
+          children: [
+            Container(
+              //anchor: anchor,
+            //  visible: shouldShowOptions,
+            //  portalFollower: optionViewBuilder,
+              child: widget.fieldViewBuilder(
+                context,
+                _textEditingController,
+                _focusNode,
+              ),
+             
+
+            ),
+            const SizedBox(height: 4,),
+            shouldShowOptions ? TextFieldTapRegion(
+                child: _currentTrigger!.optionsViewBuilder(
+                  context,
+                  _currentQuery!,
+                  _textEditingController,
+                ),
+              ) : const SizedBox(),
+          ],
         );
       },
     );
