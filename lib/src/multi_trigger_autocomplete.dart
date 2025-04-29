@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_portal/flutter_portal.dart';
@@ -93,6 +94,7 @@ class MultiTriggerAutocomplete extends StatefulWidget {
     this.textEditingController,
     this.initialValue,
     this.optionsAlignment = OptionsAlignment.bottom,
+    this.onChanged,
     this.optionsWidthFactor = 1.0,
     this.debounceDuration = const Duration(milliseconds: 300),
   })  : assert((focusNode == null) == (textEditingController == null)),
@@ -100,6 +102,8 @@ class MultiTriggerAutocomplete extends StatefulWidget {
           !(textEditingController != null && initialValue != null),
           'textEditingController and initialValue cannot be simultaneously defined.',
         );
+
+   final void Function(AutocompleteQuery?)? onChanged;
 
   /// The triggers that trigger autocomplete.
   final Iterable<AutocompleteTrigger> autocompleteTriggers;
@@ -281,6 +285,7 @@ class MultiTriggerAutocompleteState extends State<MultiTriggerAutocomplete> {
     final autocompleteTriggers = widget.autocompleteTriggers.toSet();
     for (final trigger in autocompleteTriggers) {
       final query = trigger.invokingTrigger(textEditingValue);
+      widget.onChanged?.call(query);
       if (query != null) {
         return _AutocompleteInvokedTriggerWithQuery(trigger, query);
       }
@@ -426,10 +431,10 @@ class MultiTriggerAutocompleteState extends State<MultiTriggerAutocomplete> {
             )
           : null;
 
-        return PortalTarget(
-          anchor: anchor,
-          visible: shouldShowOptions,
-          portalFollower: optionViewBuilder,
+        return Container(
+         // anchor: anchor,
+         // visible: shouldShowOptions,
+         // portalFollower: optionViewBuilder,
           child: widget.fieldViewBuilder(
             context,
             _textEditingController,
